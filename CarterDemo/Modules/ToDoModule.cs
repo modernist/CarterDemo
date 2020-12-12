@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Net;
 using System.Threading.Tasks;
+using CarterDemo.OpenApi;
 
 namespace CarterDemo.Modules
 {
@@ -14,13 +15,13 @@ namespace CarterDemo.Modules
     {
         public ToDoModule(IToDoItemProvider provider) : base("/api/todo")
         {
-            Get("/", (req, res) =>
+            Get<GetToDoItems>("/", (req, res) =>
             {
                 var items = provider.GetItems();
                 return res.AsJson(items);
             });
 
-            Get("/{id:int:min(1)}", (req, res) =>
+            Get<GetToDoItemById>("/{id:int:min(1)}", (req, res) =>
             {
                 var id = req.RouteValues.As<int>("id");
                 var item = provider.GetItem(id);
@@ -41,7 +42,7 @@ namespace CarterDemo.Modules
                 return res.Negotiate(items);
             });
 
-            Post("/", async (req, res) =>
+            Post<AddToDoItem>("/", async (req, res) =>
             {
                 var request = await req.BindAndValidate<ToDoItem>();
 

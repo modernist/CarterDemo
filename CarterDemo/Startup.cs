@@ -19,7 +19,11 @@ namespace CarterDemo
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IToDoItemProvider, ToDoItemProvider>();
-            services.AddCarter();
+            services.AddCarter(options =>
+            {
+                options.OpenApi.DocumentTitle = "Carter API Demo";
+                options.OpenApi.ServerUrls = new[] { "http://localhost:5000" };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -31,6 +35,12 @@ namespace CarterDemo
             }
 
             app.UseRouting();
+
+            app.UseSwaggerUI(opt =>
+            {
+                opt.RoutePrefix = "openapi/ui";
+                opt.SwaggerEndpoint("/openapi", "Carter OpenAPI Demo");
+            });
 
             app.UseEndpoints(endpoints =>
             {
