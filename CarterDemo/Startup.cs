@@ -8,7 +8,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Carter;
+using Carter.Response;
 using CarterDemo.Models;
+using CarterDemo.Negotiation;
 
 namespace CarterDemo
 {
@@ -23,6 +25,10 @@ namespace CarterDemo
             {
                 options.OpenApi.DocumentTitle = "Carter API Demo";
                 options.OpenApi.ServerUrls = new[] { "http://localhost:5000" };
+            }, null, config =>
+            {
+                config.WithResponseNegotiator<DefaultJsonResponseNegotiator>();
+                config.WithResponseNegotiator<XmlResponseNegotiator>();
             });
             services.AddControllers();
         }

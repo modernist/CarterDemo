@@ -5,6 +5,7 @@ using Carter.Response;
 using CarterDemo.Models;
 using Microsoft.AspNetCore.Http;
 using System;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using CarterDemo.OpenApi;
@@ -19,6 +20,12 @@ namespace CarterDemo.Modules
             {
                 var items = provider.GetItems();
                 return res.AsJson(items);
+            });
+
+            Get<GetToDoItems>("/negotiate", (req, res) =>
+            {
+                var items = provider.GetItems();
+                return res.Negotiate(items.ToList());
             });
 
             Get<GetToDoItemById>("/{id:int:min(1)}", (req, res) =>
