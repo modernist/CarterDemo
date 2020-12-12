@@ -24,6 +24,7 @@ namespace CarterDemo
                 options.OpenApi.DocumentTitle = "Carter API Demo";
                 options.OpenApi.ServerUrls = new[] { "http://localhost:5000" };
             });
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,6 +45,7 @@ namespace CarterDemo
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapDefaultControllerRoute();
                 endpoints.MapCarter();
             });
         }
